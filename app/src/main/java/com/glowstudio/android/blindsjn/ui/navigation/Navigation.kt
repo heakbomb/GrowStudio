@@ -86,3 +86,5 @@ fun AppNavHost(navController: NavHostController) {
         composable("popular") {
             PopularScreen()
         }
+    }
+}

@@ -45,6 +45,7 @@ android {
 
 dependencies {
 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,6 +61,22 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Compose Core
+    implementation("androidx.compose.ui:ui:1.7.5")
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.activity:activity-compose:1.9.3")
+
+    // Navigation for Compose
+    implementation("androidx.navigation:navigation-compose:2.8.4")
+
+    // Tooling for Compose Preview
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
+
+    // Icons
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.compose.material:material-icons-core:1.7.5")
+    implementation("androidx.compose.material:material-icons-extended:1.7.5")
 
     // Navigation
     implementation ("androidx.navigation:navigation-compose:2.8.4")
