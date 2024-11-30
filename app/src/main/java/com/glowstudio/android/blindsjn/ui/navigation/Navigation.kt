@@ -86,15 +86,3 @@ fun AppNavHost(navController: NavHostController) {
         composable("popular") {
             PopularScreen()
         }
-
-        // 메시지 화면
-        composable("message") {
-            MessageScreen()
-        }
-
-        // 프로필 화면
-        composable("profile") {
-            ProfileScreen()
-        }
-    }
-}
