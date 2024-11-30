@@ -24,6 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.glowstudio.android.blindsjn.network.LoginRequest
 import com.glowstudio.android.blindsjn.network.RetrofitInstance
@@ -225,12 +227,14 @@ fun LoginScreen(
 
             // 회원가입 버튼
             TextButton(onClick = onSignupClick) {
-                Text("회원가입")
+                Text("계정이 없으신가요? 회원가입")
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             // 비밀번호 찾기 버튼
             TextButton(onClick = onForgotPasswordClick) {
-                Text("비밀번호 찾기")
+                Text("비밀번호를 잊으셨나요?")
             }
         }
     }
