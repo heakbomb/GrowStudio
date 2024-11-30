@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    // 객체 직렬화를 위해 사용. Json 라이브러래ㅣ
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -72,4 +76,11 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.compose.material:material-icons-core:1.7.5")
     implementation("androidx.compose.material:material-icons-extended:1.7.5")
+
+    // Navigation
+    implementation ("androidx.navigation:navigation-compose:2.8.4")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.8.4")
+
+    // Json serialization (DB 전송하려면 필요함)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
