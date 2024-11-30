@@ -1,7 +1,5 @@
 package com.glowstudio.android.blindsjn.ui.screens
 
-package com.yourpackage.ui.screens
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
