@@ -5,8 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.navigation.compose.rememberNavController
 import com.glowstudio.android.blindsjn.ui.navigation.AppNavHost
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,3 +25,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
