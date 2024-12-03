@@ -39,7 +39,7 @@ fun AppNavHost(navController: NavHostController) {
             SignupScreen(
                 onSignupClick = { phoneNumber, password ->
                     // TODO: 서버와 연동하여 회원가입 처리
-                    navController.navigate("login") // 회원가입 후 로그인 화면으로 이동
+                    navController.navigate("home") // 회원가입 후 홈 화면으로 이동
                 },
                 onBackToLoginClick = { navController.navigateUp() }
             )
