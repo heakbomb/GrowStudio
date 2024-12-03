@@ -7,6 +7,10 @@ import androidx.navigation.compose.composable
 import com.glowstudio.android.blindsjn.ui.screens.LoginScreen
 import com.glowstudio.android.blindsjn.ui.screens.SignupScreen
 import com.glowstudio.android.blindsjn.ui.screens.HomeScreen
+import com.glowstudio.android.blindsjn.ui.screens.BoardScreen
+import com.glowstudio.android.blindsjn.ui.screens.PopularScreen
+import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
+import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -37,6 +41,26 @@ fun AppNavHost(navController: NavHostController) {
         // 홈 화면
         composable("home") {
             HomeScreen()
+        }
+
+        // 게시판 목록 화면
+        composable("board") {
+            BoardScreen()
+        }
+
+        // 인기글 화면
+        composable("popular") {
+            PopularScreen()
+        }
+
+        // 메시지 화면
+        composable("message") {
+            MessageScreen()
+        }
+
+        // 프로필 화면
+        composable("profile") {
+            ProfileScreen()
         }
     }
 }
