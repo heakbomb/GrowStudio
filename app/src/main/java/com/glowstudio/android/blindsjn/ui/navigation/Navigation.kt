@@ -76,5 +76,25 @@ fun AppNavHost(navController: NavHostController) {
         composable("profile") {
             ProfileScreen()
         }
+
+        // 게시판 목록 화면
+        composable("board") {
+            BoardScreen()
+        }
+
+        // 인기글 화면
+        composable("popular") {
+            PopularScreen()
+        }
+
+        // 메시지 화면
+        composable("message") {
+            MessageScreen()
+        }
+
+        // 프로필 화면
+        composable("profile") {
+            ProfileScreen()
+        }
     }
 }
