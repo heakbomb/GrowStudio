@@ -3,6 +3,7 @@ package com.glowstudio.android.blindsjn.network
 /**
  * PHP 통신 로직
  *
+ *
  * TODO: 추가적인 php 사용 필요시 작성
  **/
 
