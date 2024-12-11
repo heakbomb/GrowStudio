@@ -3,7 +3,7 @@ package com.glowstudio.android.blindsjn.ui.screens
 /**
  * 로그인 스크린 로직
  *
- *
+ * TODO: 자동로그인 체크 박스
  **/
 
 import androidx.compose.foundation.Image
@@ -133,18 +133,18 @@ fun LoginScreen(
                 onClick = {
                     coroutineScope.launch {
                         if (phoneNumber.isEmpty() || password.isEmpty()) {
-                            showEmptyFieldsPopup = true
+                            showEmptyFieldsPopup = true // 텍스트필드 공백 팝업
                         } else {
                             try {
                                 val success = login(phoneNumber, password)
                                 if (success) {
                                     onLoginClick(true) // 홈 화면으로 이동
                                 } else {
-                                    showInvalidCredentialsPopup = true
+                                    showInvalidCredentialsPopup = true //계정정보 팝업
                                 }
                             } catch (e: Exception) {
                                 Log.e("LoginScreen", "Login error: ${e.message}", e)
-                                showInvalidCredentialsPopup = true
+                                showInvalidCredentialsPopup = true //계정정보 팝업
                             }
                         }
                     }
@@ -156,7 +156,7 @@ fun LoginScreen(
                 Text("로그인")
             }
 
-            // 팝업 표시
+            // 로그인 실패시 팝업 표시
             // 텍스트필드가 비었을 때 출력
             if (showEmptyFieldsPopup) {
                 AlertDialog(
