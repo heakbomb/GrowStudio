@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.glowstudio.android.blindsjn.ui.MainScreen
 import com.glowstudio.android.blindsjn.ui.screens.LoginScreen
 import com.glowstudio.android.blindsjn.ui.screens.SignupScreen
 import com.glowstudio.android.blindsjn.ui.screens.HomeScreen
@@ -28,7 +29,7 @@ fun AppNavHost(navController: NavHostController) {
         // 로그인 화면
         composable("login") {
             LoginScreen(
-                onLoginClick = { navController.navigate("home") },
+                onLoginClick = { navController.navigate("main") },
                 onSignupClick = { navController.navigate("signup") },
                 onForgotPasswordClick = { /* TODO: 비밀번호 찾기 화면 이동 */ }
             )
@@ -43,6 +44,11 @@ fun AppNavHost(navController: NavHostController) {
                 },
                 onBackToLoginClick = { navController.navigateUp() }
             )
+        }
+
+        // 메인 화면: 아래 5개 페이지의 상위 관리
+        composable("main") {
+            MainScreen()
         }
 
         // 홈 화면

@@ -1,9 +1,10 @@
+package com.glowstudio.android.blindsjn.ui.screens
+
 /**
  * 로그인 스크린 로직
  *
  * TODO: 자동로그인 체크 박스
  **/
-package com.glowstudio.android.blindsjn.ui.screens
 
 import android.content.Context
 import android.util.Log
@@ -54,7 +55,8 @@ suspend fun login(phoneNumber: String, password: String): Boolean {
 fun LoginScreen(
     onLoginClick: (Boolean) -> Unit,
     onSignupClick: () -> Unit,
-    onForgotPasswordClick: () -> Unit
+    onForgotPasswordClick: () -> Unit,
+    isTestMode: Boolean = true // 테스트 시, true 설정하면 로그인 버튼 누를 시, 메인으로 넘어감
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -132,6 +134,7 @@ fun LoginScreen(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it.filter { char -> char.isDigit() } },
                 label = { Text("전화번호") },
+                singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
@@ -144,6 +147,7 @@ fun LoginScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("비밀번호") },
+                singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -156,7 +160,6 @@ fun LoginScreen(
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(8.dp))
 
             // 자동 로그인 체크박스
             Row(
@@ -173,6 +176,11 @@ fun LoginScreen(
             // 로그인 버튼
             Button(
                 onClick = {
+                    if (isTestMode)
+                    {
+                        // 테스트 모드일 경우 바로 다음 화면으로 이동
+                        onLoginClick(true)
+                    }else{
                     coroutineScope.launch {
                         if (phoneNumber.isEmpty() || password.isEmpty()) {
                             showEmptyFieldsPopup = true
@@ -183,9 +191,11 @@ fun LoginScreen(
                                 onLoginClick(true)
                             } else {
                                 showInvalidCredentialsPopup = true
+                            }else {
+                                showNetworkErrorPopup = true
                             }
-                        } else {
-                            showNetworkErrorPopup = true
+                            
+                        }
                         }
                     }
                 },
