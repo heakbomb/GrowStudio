@@ -19,6 +19,7 @@ import com.glowstudio.android.blindsjn.ui.screens.BoardDetailScreen
 import com.glowstudio.android.blindsjn.ui.screens.PopularScreen
 import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
+import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -69,10 +70,15 @@ fun AppNavHost(navController: NavHostController) {
             BoardScreen(navController = navController)
         }
 
-        // 게시판 화면
+        // 게시판 화면 - 게시판 목록 화면에서 받은 값을 기반으로 이동
         composable("boardDetail/{title}") { backStackEntry ->
             val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글" // 네비게이션 매개변수 추출
             BoardDetailScreen(navController = navController, title = postTitle) // title 전달
+        }
+
+        // 게시글 쓰기 화면
+        composable("writePost") {
+            WritePostScreen(navController = navController   )
         }
 
         // 인기글 화면
