@@ -34,7 +34,7 @@ val boardCategories = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BoardScreen(navController: NavController? = null) {
+fun BoardScreen(navController: NavController) {
     Scaffold(
         content = { paddingValues ->
             LazyVerticalGrid(
@@ -49,8 +49,9 @@ fun BoardScreen(navController: NavController? = null) {
                 items(boardCategories) { category ->
                     BoardCategoryItem(
                         category = category,
+                        // 각 게시판 클릭 시, navctr에 게시판 경로 전달
                         onClick = {
-                            navController?.navigate("boardDetail/${category.title}")
+                            navController.navigate("boardDetail/${category.title}")
                         }
                     )
                 }

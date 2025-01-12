@@ -52,10 +52,18 @@ fun MainScreen() {
                     HomeScreen()
                 }
                 composable("board") {
-                    title = "게시판"
+                    title = "게시판 목록"
                     showBackButton = false
                     showSearchButton = true
-                    BoardScreen()
+                    BoardScreen(navController = navController)
+                }
+                composable("boardDetail/{title}") { backStackEntry ->
+                    // 네비게이션 매개변수로 전달된 title 추출
+                    val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글"
+                    title = postTitle
+                    showBackButton = true
+                    showSearchButton = true
+                    BoardDetailScreen(navController, postTitle)
                 }
                 composable("popular") {
                     title = "인기글"

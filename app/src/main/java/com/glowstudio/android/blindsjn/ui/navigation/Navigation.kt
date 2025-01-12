@@ -15,6 +15,7 @@ import com.glowstudio.android.blindsjn.ui.screens.LoginScreen
 import com.glowstudio.android.blindsjn.ui.screens.SignupScreen
 import com.glowstudio.android.blindsjn.ui.screens.HomeScreen
 import com.glowstudio.android.blindsjn.ui.screens.BoardScreen
+import com.glowstudio.android.blindsjn.ui.screens.BoardDetailScreen
 import com.glowstudio.android.blindsjn.ui.screens.PopularScreen
 import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
@@ -65,7 +66,13 @@ fun AppNavHost(navController: NavHostController) {
 
         // 게시판 목록 화면
         composable("board") {
-            BoardScreen()
+            BoardScreen(navController = navController)
+        }
+
+        // 게시판 화면
+        composable("boardDetail/{title}") { backStackEntry ->
+            val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글" // 네비게이션 매개변수 추출
+            BoardDetailScreen(navController = navController, title = postTitle) // title 전달
         }
 
         // 인기글 화면
