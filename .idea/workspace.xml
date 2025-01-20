@@ -10,20 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ed4dd7a-a521-4a82-a468-ac7d90561092" name="Changes" comment="main ui - BoardDetailScreen">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/sources/org/gradle/accessors/dm/LibrariesForLibs.java" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/sources/org/gradle/accessors/dm/LibrariesForLibs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/sources/org/gradle/accessors/dm/LibrariesForLibsInPluginsBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.9/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/h origin 12b77c2main --force" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/metadata.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.9/dependencies-accessors/653825400482ee63928b2750563e94a5ec2d47e4/metadata.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/MainScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/MainScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/navigation/Navigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/navigation/Navigation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/HomeScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/LoginScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
@@ -132,7 +123,7 @@
     "cidr.known.project.marker": "true",
     "com.android.tools.idea.streaming.emulator.frame.visible": "false",
     "com.android.tools.idea.streaming.zoom.toolbar.visible": "false",
-    "git-widget-placeholder": "Shim",
+    "git-widget-placeholder": "Merging Shim",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
@@ -287,6 +278,7 @@
     <MESSAGE value="Network.kt 주석 작성" />
     <MESSAGE value="일부 주석 수정" />
     <MESSAGE value="main ui - BoardScreen" />
+    <MESSAGE value="rebase 완" />
     <MESSAGE value="main ui - BoardDetailScreen" />
     <option name="LAST_COMMIT_MESSAGE" value="main ui - BoardDetailScreen" />
   </component>
