@@ -47,7 +47,14 @@ fun AppNavHost(navController: NavHostController) {
 
         // 홈 화면
         composable("home") {
-            HomeScreen()
+            HomeScreen(
+                onLogoutClick = {
+                    navController.navigate("login") {
+                        popUpTo("home") { inclusive = true }  // 홈 화면 스택 제거
+                        launchSingleTop = true               // 중복 화면 방지
+                    }
+                }
+            )
         }
 
         // 게시판 목록 화면

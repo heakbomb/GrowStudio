@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     // Kotlin serialization plugin for type safe routes and navigation arguments
-    // 객체 직렬화를 위해 사용. Json 라이브러래ㅣ
+    // 객체 직렬화를 위해 사용. Json 라이브러리
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -46,6 +46,7 @@ android {
 dependencies {
 
 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -85,10 +86,20 @@ dependencies {
     // Json serialization (DB 전송하려면 필요함)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
-    //Retrofit library (서버 통신에 필요)
+    // Retrofit library (서버 통신에 필요)
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // 자동로그인을 위한 DataStore
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    // Kotlin Coroutines (DataStore는 비동기 작업을 위해 Coroutines 사용)
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    // text 추출을 위한 tess-two
+    implementation ("com.rmtheis:tess-two:9.1.0")
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 }
