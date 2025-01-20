@@ -9,7 +9,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ed4dd7a-a521-4a82-a468-ac7d90561092" name="Changes" comment="rebase" />
+    <list default="true" id="0ed4dd7a-a521-4a82-a468-ac7d90561092" name="Changes" comment="rebase">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,7 +121,8 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.language.and.region&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -219,7 +225,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733893038445</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="로그아웃 추가">
+      <option name="closed" value="true" />
+      <created>1737354894593</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737354894593</updated>
+    </task>
+    <task id="LOCAL-00004" summary="로그아웃 추가">
+      <option name="closed" value="true" />
+      <created>1737355149013</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1737355149013</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,6 +259,7 @@
     <MESSAGE value="UI-서버 작업 시작" />
     <MESSAGE value="Network.kt 주석 작성" />
     <MESSAGE value="일부 주석 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="일부 주석 수정" />
+    <MESSAGE value="로그아웃 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="로그아웃 추가" />
   </component>
 </project>
