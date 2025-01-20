@@ -132,11 +132,10 @@ fun LoginScreen(
             // 전화번호 입력
             OutlinedTextField(
                 value = phoneNumber,
-                onValueChange = { phoneNumber = it.filter { char -> char.isDigit() } },
+                onValueChange = { input -> phoneNumber = input.filter { char -> char.isDigit() } }, // 명시적 매개변수 사용
                 label = { Text("전화번호") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -145,7 +144,7 @@ fun LoginScreen(
             // 비밀번호 입력
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { input -> password = input },
                 label = { Text("비밀번호") },
                 singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -157,7 +156,6 @@ fun LoginScreen(
                         )
                     }
                 },
-                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -176,26 +174,24 @@ fun LoginScreen(
             // 로그인 버튼
             Button(
                 onClick = {
-                    if (isTestMode)
-                    {
-                        // 테스트 모드일 경우 바로 다음 화면으로 이동
-                        onLoginClick(true)
-                    }else{
                     coroutineScope.launch {
                         if (phoneNumber.isEmpty() || password.isEmpty()) {
                             showEmptyFieldsPopup = true
                         } else if (isNetworkAvailable(context)) {
                             val success = AuthRepository.login(context, phoneNumber, password)
                             if (success) {
-                                AutoLoginManager.saveLoginInfo(context, phoneNumber, password, autoLoginEnabled)
+                                AutoLoginManager.saveLoginInfo(
+                                    context,
+                                    phoneNumber,
+                                    password,
+                                    autoLoginEnabled
+                                )
                                 onLoginClick(true)
                             } else {
                                 showInvalidCredentialsPopup = true
-                            }else {
-                                showNetworkErrorPopup = true
                             }
-                            
-                        }
+                        } else {
+                            showNetworkErrorPopup = true
                         }
                     }
                 },

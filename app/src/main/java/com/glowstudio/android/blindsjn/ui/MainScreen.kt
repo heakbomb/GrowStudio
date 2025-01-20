@@ -49,7 +49,14 @@ fun MainScreen() {
                     title = "홈 화면"
                     showBackButton = false
                     showSearchButton = false
-                    HomeScreen()
+                    HomeScreen(
+                        onLogoutClick ={
+                            navController.navigate("login") {
+                                popUpTo("main") { inclusive = true }  // 홈 화면 스택 제거
+                                launchSingleTop = true               // 중복 화면 방지
+                            }
+                        }
+                    )
                 }
                 composable("board") {
                     title = "게시판 목록"
