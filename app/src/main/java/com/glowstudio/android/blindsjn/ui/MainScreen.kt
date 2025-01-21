@@ -13,7 +13,7 @@ import com.glowstudio.android.blindsjn.ui.navigation.BottomNavigationBar
 import com.glowstudio.android.blindsjn.ui.screens.*
 
 @Composable
-fun MainScreen() {
+fun MainScreen(rootNavController: NavHostController) {
     // 네비게이션 컨트롤러 생성
     val navController = rememberNavController()
 
@@ -24,7 +24,6 @@ fun MainScreen() {
 
     // Scaffold로 전체 레이아웃 구성
     Scaffold(
-        // 상단 바
         topBar = {
             TopBar(
                 title = title,
@@ -34,38 +33,28 @@ fun MainScreen() {
                 onSearchClick = { /* TODO: 검색 동작 */ }
             )
         },
-        // 하단 네비게이션 바
         bottomBar = {
             BottomNavigationBar(navController)
         },
         content = { paddingValues ->
-            // NavHost로 화면 전환 관리
             NavHost(
                 navController = navController,
-                startDestination = "home", // 시작 화면 설정
+                startDestination = "home",
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable("home") {
                     title = "홈 화면"
                     showBackButton = false
                     showSearchButton = false
-                    HomeScreen(
-                        onLogoutClick ={
-                            navController.navigate("login") {
-                                popUpTo("main") { inclusive = true }  // 홈 화면 스택 제거
-                                launchSingleTop = true               // 중복 화면 방지
-                            }
-                        }
-                    )
+                    HomeScreen()
                 }
                 composable("board") {
                     title = "게시판 목록"
                     showBackButton = false
                     showSearchButton = true
-                    BoardScreen(navController = navController)
+                    BoardScreen(navController)
                 }
                 composable("boardDetail/{title}") { backStackEntry ->
-                    // 네비게이션 매개변수로 전달된 title 추출
                     val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글"
                     title = postTitle
                     showBackButton = true
@@ -88,7 +77,13 @@ fun MainScreen() {
                     title = "프로필"
                     showBackButton = false
                     showSearchButton = false
-                    ProfileScreen()
+                    ProfileScreen(
+                        onLogoutClick = {
+                            rootNavController.navigate("login") {
+                                popUpTo("main") { inclusive = true }
+                            }
+                        }
+                    )
                 }
             }
         }

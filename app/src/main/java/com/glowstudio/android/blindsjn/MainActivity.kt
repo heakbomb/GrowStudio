@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.*
 import androidx.navigation.compose.rememberNavController
-import com.glowstudio.android.blindsjn.ui.navigation.AppNavHost
+import com.glowstudio.android.blindsjn.ui.navigation.AppNavGraph
 import androidx.compose.ui.tooling.preview.Preview
 import com.glowstudio.android.blindsjn.ui.theme.BlindSJNTheme
 
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             BlindSJNTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    AppNavHost(navController = navController)
+                    AppNavGraph(navController = navController)
                 }
             }
         }
