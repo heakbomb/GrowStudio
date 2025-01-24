@@ -12,6 +12,7 @@ fun AppNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = "login"
+
     ) {
         // 로그인 화면
         composable("login") {
