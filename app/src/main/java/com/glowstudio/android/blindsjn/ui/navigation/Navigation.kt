@@ -20,6 +20,7 @@ import com.glowstudio.android.blindsjn.ui.screens.PopularScreen
 import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
+import com.glowstudio.android.blindsjn.ui.screens.AddScheduleScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -85,25 +86,23 @@ fun AppNavHost(navController: NavHostController) {
         composable("popular") {
             PopularScreen()
         }
-
-        // 메시지 화면
+        // 메시지 (캘린더) 화면
         composable("message") {
-            MessageScreen()
+            MessageScreen(navController = navController)
         }
-
+        // 캘린더 일정 추가 화면
+        composable("addSchedule") {
+            AddScheduleScreen(
+                onCancel = { navController.navigateUp() },
+                onSave = {
+                    // schedule 정보 처리 로직
+                    navController.navigateUp()
+                }
+            )
+        }
         // 프로필 화면
         composable("profile") {
             ProfileScreen()
-        }
-
-        // 게시판 목록 화면
-        composable("board") {
-            BoardScreen(navController = navController)
-        }
-
-        // 인기글 화면
-        composable("popular") {
-            PopularScreen()
         }
     }
 }

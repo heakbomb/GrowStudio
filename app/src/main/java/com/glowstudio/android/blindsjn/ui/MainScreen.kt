@@ -82,7 +82,7 @@ fun MainScreen() {
                     title = "메시지"
                     showBackButton = false
                     showSearchButton = true
-                    MessageScreen()
+                    MessageScreen(navController = navController)
                 }
                 composable("profile") {
                     title = "프로필"
