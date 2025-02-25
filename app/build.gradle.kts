@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     // Kotlin serialization plugin for type safe routes and navigation arguments
-    // 객체 직렬화를 위해 사용. Json 라이브러리
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -18,7 +17,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,9 +32,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-
-        // 디슈가링 = 캘린더 구현에 사용되는 api가 26부터 적용할 수 있으나
-        // 작업 중인 파일은 24부터 구동 가능하기에 그 제한을 풀어주는 것
+        // Kotlin DSL에서는 isCoreLibraryDesugaringEnabled를 사용합니다.
         isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
@@ -48,8 +44,7 @@ android {
 }
 
 dependencies {
-
-
+    // 기본 AndroidX, Compose, Material3, Navigation, Test 의존성
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,7 +61,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Compose Core
+    // Compose Core 및 Material3
     implementation("androidx.compose.ui:ui:1.7.5")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.activity:activity-compose:1.9.3")
@@ -74,64 +69,28 @@ dependencies {
     // Navigation for Compose
     implementation("androidx.navigation:navigation-compose:2.8.4")
 
-    // Tooling for Compose Preview
-    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
-
     // Icons
-    implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.compose.material:material-icons-core:1.7.5")
     implementation("androidx.compose.material:material-icons-extended:1.7.5")
 
-    // Navigation
-    implementation ("androidx.navigation:navigation-compose:2.8.4")
-    androidTestImplementation("androidx.navigation:navigation-testing:2.8.4")
-
-    // Json serialization (DB 전송하려면 필요함)
+    // JSON serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
-    //Retrofit library (서버 통신에 필요)
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    // Retrofit and Coroutines
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Compose Core
-    implementation("androidx.compose.ui:ui:1.7.5")
-    implementation("androidx.compose.material3:material3:1.3.1")
-    implementation("androidx.activity:activity-compose:1.9.3")
+    // DataStore for auto-login
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
-    // Navigation for Compose
-    implementation("androidx.navigation:navigation-compose:2.8.4")
+    // tess-two for text extraction
+    implementation("com.rmtheis:tess-two:9.1.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // Tooling for Compose Preview
-    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
-
-    // Icons
-    implementation("androidx.compose.material3:material3:1.3.1")
-    implementation("androidx.compose.material:material-icons-core:1.7.5")
-    implementation("androidx.compose.material:material-icons-extended:1.7.5")
-
-    // Json serialization (DB 전송하려면 필요함)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-
-    // Retrofit library (서버 통신에 필요)
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // 자동로그인을 위한 DataStore
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
-    // Kotlin Coroutines (DataStore는 비동기 작업을 위해 Coroutines 사용)
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-
-    // text 추출을 위한 tess-two
-    implementation ("com.rmtheis:tess-two:9.1.0")
-    implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    // 디슈가링
+    // Core Library Desugaring: Java 8+ API를 낮은 API 레벨에서도 사용
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }

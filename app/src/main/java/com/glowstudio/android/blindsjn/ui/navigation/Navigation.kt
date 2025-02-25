@@ -1,16 +1,11 @@
 package com.glowstudio.android.blindsjn.ui.navigation
 
-/**
- * 스크린 간 전환 로직
- *
- * TODO: 남은 스크린 구현
- **/
-
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.glowstudio.android.blindsjn.ui.MainScreen
+import com.glowstudio.android.blindsjn.ui.screens.AddScheduleScreen
 import com.glowstudio.android.blindsjn.ui.screens.LoginScreen
 import com.glowstudio.android.blindsjn.ui.screens.SignupScreen
 import com.glowstudio.android.blindsjn.ui.screens.HomeScreen
@@ -21,12 +16,14 @@ import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
 import com.glowstudio.android.blindsjn.ui.screens.PostDetailScreen
-import com.glowstudio.android.blindsjn.ui.screens.AddScheduleScreen
-//Todo: 여기에 달력 스크린 import하고
+import com.glowstudio.android.blindsjn.ui.viewModel.TopBarState
+import com.glowstudio.android.blindsjn.ui.viewModel.TopBarViewModel
 
 @Composable
-fun AppNavHost(navController: NavHostController) {
-
+fun AppNavHost(
+    navController: NavHostController,
+    topBarViewModel: TopBarViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = "login"
@@ -53,65 +50,76 @@ fun AppNavHost(navController: NavHostController) {
 
         // 메인 화면: 아래 5개 페이지의 상위 관리
         composable("main") {
-            MainScreen()
+            MainScreen() // MainScreen은 네비게이션의 컨테이너 역할
         }
 
         // 홈 화면
         composable("home") {
-            HomeScreen(
-                onLogoutClick = {
-                    navController.navigate("login") {
-                        popUpTo("main") { inclusive = true }  // 홈 화면 스택 제거
-                        launchSingleTop = true               // 중복 화면 방지
-                    }
-                }
-            )
+            // 홈 화면에서는 TopBar를 단순하게 설정
+            topBarViewModel.updateState(TopBarState("홈 화면", false, false))
+            HomeScreen()
         }
 
         // 게시판 목록 화면
         composable("board") {
+            topBarViewModel.updateState(TopBarState("게시판 목록", false, true))
             BoardScreen(navController = navController)
         }
 
-        // 게시판 화면 - 게시판 목록 화면에서 받은 값을 기반으로 이동
+        // 게시판 상세 화면
         composable("boardDetail/{title}") { backStackEntry ->
-            val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글" // 네비게이션 매개변수 추출
-            BoardDetailScreen(navController = navController, title = postTitle) // title 전달
+            val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글"
+            topBarViewModel.updateState(TopBarState(postTitle, true, true))
+            BoardDetailScreen(navController = navController, title = postTitle)
         }
 
         // 게시글 쓰기 화면
         composable("writePost") {
+            topBarViewModel.updateState(TopBarState("게시글 작성", true, false))
             WritePostScreen(navController = navController)
         }
 
         // 상세 게시물 화면
         composable("postDetail/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId") ?: "1"
+            // 만약 PostDetailScreen에서 topBar 상태 변경이 필요하다면, 여기서 updateState 호출
+            topBarViewModel.updateState(TopBarState("게시글 상세", true, false))
             PostDetailScreen(navController = navController, postId = postId)
         }
 
         // 인기글 화면
         composable("popular") {
+            topBarViewModel.updateState(TopBarState("인기글", false, false))
             PopularScreen()
         }
+
         // 메시지 (캘린더) 화면
         composable("message") {
-            // todo: 여기 밑에 참조값만 바꾸면 됨.
+            topBarViewModel.updateState(TopBarState("캘린더", false, true))
             MessageScreen(navController = navController)
         }
+
         // 캘린더 일정 추가 화면
         composable("addSchedule") {
+            topBarViewModel.updateState(TopBarState("일정 추가", true, false))
             AddScheduleScreen(
                 onCancel = { navController.navigateUp() },
-                onSave = {
+                onSave = { schedule ->
                     // schedule 정보 처리 로직
                     navController.navigateUp()
                 }
             )
         }
+
         // 프로필 화면
         composable("profile") {
-            ProfileScreen()
+            topBarViewModel.updateState(TopBarState("프로필", false, false))
+            ProfileScreen(onLogoutClick = {
+                navController.navigate("login") {
+                    popUpTo("main") { inclusive = true }
+                    launchSingleTop = true
+                }
+            })
         }
     }
 }
