@@ -20,7 +20,9 @@ import com.glowstudio.android.blindsjn.ui.screens.PopularScreen
 import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
+import com.glowstudio.android.blindsjn.ui.screens.PostDetailScreen
 import com.glowstudio.android.blindsjn.ui.screens.AddScheduleScreen
+//Todo: 여기에 달력 스크린 import하고
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -79,7 +81,13 @@ fun AppNavHost(navController: NavHostController) {
 
         // 게시글 쓰기 화면
         composable("writePost") {
-            WritePostScreen(navController = navController   )
+            WritePostScreen(navController = navController)
+        }
+
+        // 상세 게시물 화면
+        composable("postDetail/{postId}") { backStackEntry ->
+            val postId = backStackEntry.arguments?.getString("postId") ?: "1"
+            PostDetailScreen(navController = navController, postId = postId)
         }
 
         // 인기글 화면
@@ -88,6 +96,7 @@ fun AppNavHost(navController: NavHostController) {
         }
         // 메시지 (캘린더) 화면
         composable("message") {
+            // todo: 여기 밑에 참조값만 바꾸면 됨.
             MessageScreen(navController = navController)
         }
         // 캘린더 일정 추가 화면
