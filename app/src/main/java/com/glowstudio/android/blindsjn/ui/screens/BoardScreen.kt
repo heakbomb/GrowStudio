@@ -49,7 +49,7 @@ fun BoardScreen(navController: NavController) {
                 items(boardCategories) { category ->
                     BoardCategoryItem(
                         category = category,
-                        // 각 게시판 클릭 시, navctr에 게시판 경로 전달
+                        // 각 게시판 클릭 시, navctrl에 게시판 경로 전달
                         onClick = {
                             navController.navigate("boardDetail/${category.title}")
                         }

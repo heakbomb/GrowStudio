@@ -34,6 +34,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+
+        // 디슈가링 = 캘린더 구현에 사용되는 api가 26부터 적용할 수 있으나
+        // 작업 중인 파일은 24부터 구동 가능하기에 그 제한을 풀어주는 것
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -127,4 +131,7 @@ dependencies {
     implementation ("com.rmtheis:tess-two:9.1.0")
     implementation ("androidx.appcompat:appcompat:1.6.1")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // 디슈가링
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
