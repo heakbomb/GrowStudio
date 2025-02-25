@@ -1,6 +1,4 @@
-/**
-
-package com.glowstudio.android.blindsjn.ui.navigation
+package com.glowstudio.android.blindsjn.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,6 +6,9 @@ import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * 상단바 상태 데이터 클래스
+ * title: 상단바에 표시할 제목
+ * showBackButton: 뒤로가기 버튼 표시 여부
+ * showSearchButton: 검색 버튼 표시 여부
  */
 data class TopBarState(
     val title: String,
@@ -26,4 +27,3 @@ class TopBarViewModel : ViewModel() {
         _topBarState.value = newState
     }
 }
-**/

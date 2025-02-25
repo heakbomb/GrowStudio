@@ -4,87 +4,48 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.glowstudio.android.blindsjn.ui.navigation.TopBar
+import com.glowstudio.android.blindsjn.ui.navigation.AppNavHost
 import com.glowstudio.android.blindsjn.ui.navigation.BottomNavigationBar
-import com.glowstudio.android.blindsjn.ui.screens.*
+import com.glowstudio.android.blindsjn.ui.navigation.TopBar
+import com.glowstudio.android.blindsjn.ui.viewModel.TopBarViewModel
+import androidx.compose.foundation.layout.Box
 
+/**
+ * 메인 스크린: 상단바, 하단 네비게이션 바, 내부 컨텐츠(AppNavHost)를 포함하여 전체 화면 전환을 관리합니다.
+ */
 @Composable
-fun MainScreen(rootNavController: NavHostController) {
-    // 네비게이션 컨트롤러 생성
+fun MainScreen(topBarViewModel: TopBarViewModel = viewModel()) {
+    // 하나의 NavController 생성
     val navController = rememberNavController()
+    // TopBarViewModel에서 상단바 상태를 관찰
+    val topBarState by topBarViewModel.topBarState.collectAsState()
 
-    // 상단바 상태 관리
-    var title by remember { mutableStateOf("홈 화면") }
-    var showBackButton by remember { mutableStateOf(false) }
-    var showSearchButton by remember { mutableStateOf(true) }
-
-    // Scaffold로 전체 레이아웃 구성
     Scaffold(
+        // 상단바: TopBarViewModel의 상태를 기반으로 동적으로 업데이트됨
         topBar = {
             TopBar(
-                title = title,
-                showBackButton = showBackButton,
-                showSearchButton = showSearchButton,
+                title = topBarState.title,
+                showBackButton = topBarState.showBackButton,
+                showSearchButton = topBarState.showSearchButton,
                 onBackClick = { navController.navigateUp() },
-                onSearchClick = { /* TODO: 검색 동작 */ }
+                onSearchClick = { /* TODO: 검색 동작 구현 */ }
             )
         },
+        // 하단 네비게이션 바
         bottomBar = {
             BottomNavigationBar(navController)
         },
+        // 내부 컨텐츠: AppNavHost에 navController와 TopBarViewModel 전달
         content = { paddingValues ->
-            NavHost(
-                navController = navController,
-                startDestination = "home",
-                modifier = Modifier.padding(paddingValues)
-            ) {
-                composable("home") {
-                    title = "홈 화면"
-                    showBackButton = false
-                    showSearchButton = false
-                    HomeScreen()
-                }
-                composable("board") {
-                    title = "게시판 목록"
-                    showBackButton = false
-                    showSearchButton = true
-                    BoardScreen(navController)
-                }
-                composable("boardDetail/{title}") { backStackEntry ->
-                    val postTitle = backStackEntry.arguments?.getString("title") ?: "게시글"
-                    title = postTitle
-                    showBackButton = true
-                    showSearchButton = true
-                    BoardDetailScreen(navController, postTitle)
-                }
-                composable("popular") {
-                    title = "인기글"
-                    showBackButton = false
-                    showSearchButton = false
-                    PopularScreen()
-                }
-                composable("message") {
-                    title = "메시지"
-                    showBackButton = false
-                    showSearchButton = true
-                    MessageScreen(navController = navController)
-                }
-                composable("profile") {
-                    title = "프로필"
-                    showBackButton = false
-                    showSearchButton = false
-                    ProfileScreen(
-                        onLogoutClick = {
-                            rootNavController.navigate("login") {
-                                popUpTo("main") { inclusive = true }
-                            }
-                        }
-                    )
-                }
+            // paddingValues에 추가 top padding(예: 16.dp)을 더해 상단바와의 여백을 확보합니다.
+            Box(modifier = Modifier.padding(paddingValues).padding(top = 16.dp)) {
+                AppNavHost(
+                    navController = navController,
+                    topBarViewModel = topBarViewModel
+                )
             }
         }
     )

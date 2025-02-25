@@ -58,7 +58,7 @@ fun WritePostScreen(navController: NavController) {
                 OutlinedTextField(
                     value = content,
                     onValueChange = { content = it },
-                    placeholder = { Text("학교 친구들과 자유롭게 얘기해보세요.\n#수강신청 #취업") },
+                    placeholder = { Text("자유롭게 얘기해보세요.\n#질문 #고민") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
