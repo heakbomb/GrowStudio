@@ -10,10 +10,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.glowstudio.android.blindsjn.tempData.ScheduleInput
+import com.glowstudio.android.blindsjn.ui.dialog.CustomTimePickerDialog
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import com.glowstudio.android.blindsjn.ui.dialog.InlineTimePicker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +21,6 @@ fun AddScheduleScreen(
     onCancel: () -> Unit,
     onSave: (ScheduleInput) -> Unit
 ) {
-    // 스케줄 입력 상태
     var title by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
@@ -29,17 +28,13 @@ fun AddScheduleScreen(
     var endTime by remember { mutableStateOf("") }
     var memo by remember { mutableStateOf("") }
 
-    // 시작일/종료일 선택 다이얼로그 상태 (날짜 선택은 그대로 DatePickerDialog 사용)
     var showStartDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }
+    var showStartTimeDialog by remember { mutableStateOf(false) }
+    var showEndTimeDialog by remember { mutableStateOf(false) }
 
-    // DatePickerState 생성
     val startDatePickerState = rememberDatePickerState(initialSelectedDateMillis = null)
     val endDatePickerState = rememberDatePickerState(initialSelectedDateMillis = null)
-
-    // 타임피커 다이얼로그 대신, 인라인 타임피커 UI를 사용할지 여부 (토글로 제어)
-    var showStartTimePickerInline by remember { mutableStateOf(false) }
-    var showEndTimePickerInline by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -73,7 +68,6 @@ fun AddScheduleScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // 제목 입력
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
@@ -81,7 +75,7 @@ fun AddScheduleScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // 시작일 / 종료일 (같은 줄)
+            // 시작일/종료일 row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -106,7 +100,7 @@ fun AddScheduleScreen(
                 )
             }
 
-            // 시작시간 / 종료시간 (같은 줄) - 인라인 타임피커 토글
+            // 시작시간/종료시간 row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -117,7 +111,7 @@ fun AddScheduleScreen(
                     label = { Text("시작 시간") },
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { showStartTimePickerInline = !showStartTimePickerInline },
+                        .clickable { showStartTimeDialog = true },
                     readOnly = true
                 )
                 OutlinedTextField(
@@ -126,34 +120,11 @@ fun AddScheduleScreen(
                     label = { Text("종료 시간") },
                     modifier = Modifier
                         .weight(1f)
-                        .clickable { showEndTimePickerInline = !showEndTimePickerInline },
+                        .clickable { showEndTimeDialog = true },
                     readOnly = true
                 )
             }
 
-            // 인라인 시작 시간 타임피커 (토글에 따라 표시)
-            if (showStartTimePickerInline) {
-                InlineTimePicker(
-                    initialHour = if (startTime.isNotEmpty()) startTime.substringBefore(":").toInt() else 13,
-                    initialMinute = if (startTime.isNotEmpty()) startTime.substringAfter(":").toInt() else 0
-                ) { hour, minute ->
-                    startTime = String.format("%02d:%02d", hour, minute)
-                    showStartTimePickerInline = false
-                }
-            }
-
-            // 인라인 종료 시간 타임피커 (토글에 따라 표시)
-            if (showEndTimePickerInline) {
-                InlineTimePicker(
-                    initialHour = if (endTime.isNotEmpty()) endTime.substringBefore(":").toInt() else 13,
-                    initialMinute = if (endTime.isNotEmpty()) endTime.substringAfter(":").toInt() else 0
-                ) { hour, minute ->
-                    endTime = String.format("%02d:%02d", hour, minute)
-                    showEndTimePickerInline = false
-                }
-            }
-
-            // 메모 입력
             OutlinedTextField(
                 value = memo,
                 onValueChange = { memo = it },
@@ -161,7 +132,6 @@ fun AddScheduleScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // 하단 버튼 (취소 / 저장)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
@@ -187,7 +157,7 @@ fun AddScheduleScreen(
         }
     }
 
-    // 시작일 DatePickerDialog (날짜 선택 모달)
+    // 시작일 DatePickerDialog
     if (showStartDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showStartDatePicker = false },
@@ -195,10 +165,10 @@ fun AddScheduleScreen(
                 TextButton(onClick = {
                     val selectedMillis = startDatePickerState.selectedDateMillis
                     if (selectedMillis != null) {
-                        val selectedDateLocal: LocalDate = Instant.ofEpochMilli(selectedMillis)
+                        val localDate: LocalDate = Instant.ofEpochMilli(selectedMillis)
                             .atZone(ZoneId.systemDefault())
                             .toLocalDate()
-                        startDate = selectedDateLocal.toString()
+                        startDate = localDate.toString()
                     }
                     showStartDatePicker = false
                 }) {
@@ -215,7 +185,7 @@ fun AddScheduleScreen(
         }
     }
 
-    // 종료일 DatePickerDialog (날짜 선택 모달)
+    // 종료일 DatePickerDialog
     if (showEndDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showEndDatePicker = false },
@@ -223,10 +193,10 @@ fun AddScheduleScreen(
                 TextButton(onClick = {
                     val selectedMillis = endDatePickerState.selectedDateMillis
                     if (selectedMillis != null) {
-                        val selectedDateLocal: LocalDate = Instant.ofEpochMilli(selectedMillis)
+                        val localDate: LocalDate = Instant.ofEpochMilli(selectedMillis)
                             .atZone(ZoneId.systemDefault())
                             .toLocalDate()
-                        endDate = selectedDateLocal.toString()
+                        endDate = localDate.toString()
                     }
                     showEndDatePicker = false
                 }) {
@@ -241,5 +211,27 @@ fun AddScheduleScreen(
         ) {
             DatePicker(state = endDatePickerState)
         }
+    }
+
+    // 시작 시간 TimePicker 팝업
+    if (showStartTimeDialog) {
+        CustomTimePickerDialog(
+            onDismiss = { showStartTimeDialog = false },
+            onConfirm = { hour, minute ->
+                startTime = String.format("%02d:%02d", hour, minute)
+                showStartTimeDialog = false
+            }
+        )
+    }
+
+    // 종료 시간 TimePicker 팝업
+    if (showEndTimeDialog) {
+        CustomTimePickerDialog(
+            onDismiss = { showEndTimeDialog = false },
+            onConfirm = { hour, minute ->
+                endTime = String.format("%02d:%02d", hour, minute)
+                showEndTimeDialog = false
+            }
+        )
     }
 }
