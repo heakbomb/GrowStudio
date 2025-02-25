@@ -14,17 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-
-
-// TODO: 서버 API의 JSON 응답 필드와 맞게 수정해야 함
-data class Post(
-    val title: String, // 게시글 제목
-    val content: String, // 게시글 내용 미리보기
-    val category: String, // 게시글 카테고리
-    val experience: String, // 작성자 경력
-    val time: String, // 게시글 작성 시간
-    val commentCount: Int // 댓글 수
-)
+import com.glowstudio.android.blindsjn.model.Post
 
 @Composable
 fun BoardDetailScreen(navController: NavController, title: String) {
@@ -36,10 +26,10 @@ fun BoardDetailScreen(navController: NavController, title: String) {
     // TODO: 아래는 더미 데이터. 서버 연동 시 API 호출로 대체 필요
     val categories = listOf("모든 분야", "카페", "식당", "배달 전문", "패스트푸드", "호텔")
     val posts = listOf(
-        Post("비수기네요...", "요즘 장사가 잘 안 되네요.", "카페", "/2년", "17분 전", 18),
-        Post("오늘도 화이팅입니다.", "손님 줄어든 게 너무 힘드네요.", "식당", "/1년", "57분 전", 3),
-        Post("봉어빵 메뉴 잘 나가나요?", "겨울 한정 메뉴를 추가하려 합니다.", "카페", "/1년", "11:27", 8),
-        Post("배달 플랫폼 수수료 또 오른다네요;", "수수료 때문에 고민입니다.", "배달 전문", "/5년", "8:29", 48)
+        Post(4,"비수기네요...", "요즘 장사가 잘 안 되네요.", "카페", "/2년", "17분 전", 18,5),
+        Post(3,"오늘도 화이팅입니다.", "손님 줄어든 게 너무 힘드네요.", "식당", "/1년", "57분 전", 3,23),
+        Post(2,"봉어빵 메뉴 잘 나가나요?", "겨울 한정 메뉴를 추가하려 합니다.", "카페", "/1년", "11:27", 8,1),
+        Post(1,"배달 플랫폼 수수료 또 오른다네요;", "수수료 때문에 고민입니다.", "배달 전문", "/5년", "8:29", 48,0)
     )
 
 
@@ -73,7 +63,7 @@ fun BoardDetailScreen(navController: NavController, title: String) {
                 val filteredPosts = posts.filter { post ->
                     selectedCategory == "모든 분야" || post.category.contains(selectedCategory)
                 }
-                PostList(posts = filteredPosts)
+                PostList(navController, posts = filteredPosts)
             }
         }
     )
@@ -128,7 +118,7 @@ fun FilterChip(
 }
 
 @Composable
-fun PostList(posts: List<Post>) {
+fun PostList(navController: NavController, posts: List<Post>) {
     // 게시글 리스트
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -136,18 +126,20 @@ fun PostList(posts: List<Post>) {
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     ) {
         items(posts) { post ->
-            PostItem(post = post)
+            PostItem(navController, post)
         }
     }
 }
 
 @Composable
-fun PostItem(post: Post) {
+fun PostItem(navController: NavController, post: Post) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
-            .clickable { /* TODO: 게시글 상세로 이동 */ }
+            .clickable {
+                println("Navigating to postDetail/${post.id}") // 로그 확인용
+                navController.navigate("postDetail/${post.id.toString()}") } // 게시물 상세로 이동
             .padding(16.dp)
     ) {
         // 게시글 제목
