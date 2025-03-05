@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
             BlindSJNTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    // TopBarViewModel 인스턴스를 생성하여 AppNavHost에 전달
                     val topBarViewModel: TopBarViewModel = viewModel()
                     AppNavHost(
                         navController = navController,
