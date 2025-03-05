@@ -51,7 +51,6 @@ suspend fun login(phoneNumber: String, password: String): Boolean {
     }
 }
 
-@Preview
 @Composable
 fun LoginScreen(
     onLoginClick: (Boolean) -> Unit,
