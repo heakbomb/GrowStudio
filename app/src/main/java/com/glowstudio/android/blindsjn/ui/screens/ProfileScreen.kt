@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
-    onLogoutClick: () -> Unit  // 네비게이션 이동
+    onLogoutClick: () -> Unit,  // 네비게이션 이동
+    onBusinessCertificationClick: () -> Unit  // 사업자 인증 버튼 클릭 시 호출되는 콜백
     ) {
 
     val context = LocalContext.current
@@ -49,6 +50,19 @@ fun ProfileScreen(
                 .wrapContentWidth()
         ) {
             Text(text = "로그아웃")
+        }
+
+        // 사업자 인증 버튼 (로그아웃 버튼 아래에 배치)
+        Button(
+            onClick = { onBusinessCertificationClick() },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .offset(x = 0.dp, y = 120.dp) // 로그아웃 버튼보다 아래에 배치 (조정 가능)
+                .padding(8.dp)
+                .height(50.dp)
+                .wrapContentWidth()
+        ) {
+            Text(text = "사업자 인증")
         }
 
         // 로그아웃 팝업

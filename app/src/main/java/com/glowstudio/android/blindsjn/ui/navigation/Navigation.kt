@@ -16,6 +16,7 @@ import com.glowstudio.android.blindsjn.ui.screens.MessageScreen
 import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
 import com.glowstudio.android.blindsjn.ui.screens.PostDetailScreen
+import com.glowstudio.android.blindsjn.ui.screens.BusinessCertificationScreen
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarState
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarViewModel
 
@@ -111,15 +112,34 @@ fun AppNavHost(
             )
         }
 
+        // 사업자 인증 화면
+        composable("certification") {
+            topBarViewModel.updateState(TopBarState("사업자 인증", true, false))
+            BusinessCertificationScreen(
+                navController = navController,
+                onConfirm = { phone, certNumber, industry ->
+                    // 인증 완료 후 네비게이션 로직 처리
+                    navController.navigate("someNextRoute")
+                }
+            )
+        }
+
+
         // 프로필 화면
         composable("profile") {
             topBarViewModel.updateState(TopBarState("프로필", false, false))
-            ProfileScreen(onLogoutClick = {
-                navController.navigate("login") {
-                    popUpTo("main") { inclusive = true }
-                    launchSingleTop = true
+            ProfileScreen(
+                onLogoutClick = {
+                    navController.navigate("login") {
+                        popUpTo("main") { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onBusinessCertificationClick = {
+                    navController.navigate("certification")
                 }
-            })
+            )
         }
+
     }
 }
