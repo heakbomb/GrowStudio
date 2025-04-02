@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.glowstudio.android.blindsjn.network.LoginRequest
-import com.glowstudio.android.blindsjn.network.RetrofitInstance
+import com.glowstudio.android.blindsjn.network.InternalServer
 import com.glowstudio.android.blindsjn.network.AuthRepository
 import com.glowstudio.android.blindsjn.R
 import com.glowstudio.android.blindsjn.network.AutoLoginManager
@@ -39,12 +39,13 @@ import java.io.IOException
 // 로그인 함수 (서버 통신)
 suspend fun login(phoneNumber: String, password: String): Boolean {
     val request = LoginRequest(phoneNumber, password)
-    val response = RetrofitInstance.api.login(request)
+    val response = InternalServer.api.login(request)
 
     return if (response.isSuccessful) {
         val result = response.body()
         Log.d("LoginScreen", "Login result: $result")
         result?.status == "success"
+
     } else {
         Log.e("LoginScreen", "Error: ${response.errorBody()?.string()}")
         false
@@ -71,19 +72,22 @@ fun LoginScreen(
     var showNetworkErrorPopup by remember { mutableStateOf(false) } // 네트워크 오류 팝업 상태
 
     // 네트워크 상태 확인
+    var autoLoginAttempted by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        if (!isNetworkAvailable(context)) {
-            showNetworkErrorPopup = true // 네트워크 오류 팝업 활성화
-        } else {
-            // 자동 로그인 로직
-            autoLoginEnabled = AutoLoginManager.isAutoLoginEnabled(context)
-            if (autoLoginEnabled) {
-                AutoLoginManager.getSavedCredentials(context)?.let { (savedPhone, savedPassword) ->
-                    phoneNumber = savedPhone
-                    password = savedPassword
-                    coroutineScope.launch {
-                        val success = login(savedPhone, savedPassword)
-                        if (success) onLoginClick(true)
+        if (!autoLoginAttempted) {
+            autoLoginAttempted = true
+            if (!isNetworkAvailable(context)) {
+                showNetworkErrorPopup = true
+            } else {
+                autoLoginEnabled = AutoLoginManager.isAutoLoginEnabled(context)
+                if (autoLoginEnabled) {
+                    AutoLoginManager.getSavedCredentials(context)?.let { (savedPhone, savedPassword) ->
+                        phoneNumber = savedPhone
+                        password = savedPassword
+                        coroutineScope.launch {
+                            val success = login(savedPhone, savedPassword)
+                            if (success) onLoginClick(true)
+                        }
                     }
                 }
             }

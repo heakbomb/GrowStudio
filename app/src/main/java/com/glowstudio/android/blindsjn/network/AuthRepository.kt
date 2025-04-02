@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.glowstudio.android.blindsjn.network.LoginRequest
-import com.glowstudio.android.blindsjn.network.RetrofitInstance
+import com.glowstudio.android.blindsjn.network.InternalServer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -33,7 +33,7 @@ object AuthRepository {
             // 서버에 로그인 요청
             val request = LoginRequest(phoneNumber, password)
             val response = withContext(Dispatchers.IO) {
-                RetrofitInstance.api.login(request)
+                InternalServer.api.login(request)
             }
 
             // 성공적인 응답 확인
