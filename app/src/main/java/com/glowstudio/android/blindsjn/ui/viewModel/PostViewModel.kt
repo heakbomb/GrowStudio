@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glowstudio.android.blindsjn.model.*
 import com.glowstudio.android.blindsjn.network.*
+import com.glowstudio.android.blindsjn.network.CommentRequest
+import com.glowstudio.android.blindsjn.network.EditCommentRequest
+import com.glowstudio.android.blindsjn.network.DeleteCommentRequest
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -73,6 +76,7 @@ class PostViewModel : ViewModel() {
         }
     }
 
+
     // ✅ 게시글 삭제
     fun deletePost(postId: Int) {
         viewModelScope.launch {
@@ -122,6 +126,10 @@ class PostViewModel : ViewModel() {
             }
         }
     }
+    fun setStatusMessage(message: String) {
+        _statusMessage.value = message
+    }
+
 
     // ✅ 댓글 저장
     fun saveComment(postId: Int, userId: Int, content: String) {
