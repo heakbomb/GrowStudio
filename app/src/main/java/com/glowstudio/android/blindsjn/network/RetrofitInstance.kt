@@ -7,6 +7,9 @@ package com.glowstudio.android.blindsjn.network
  **/
 
 import com.glowstudio.android.blindsjn.network.ApiService
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -53,7 +56,7 @@ class NewsRepository {
  *
  *
  *
-**/
+ **/
 // Retrofit 인스턴스를 생성하는 싱글톤 객체
 object NewsServer {
     private const val BASE_URL = "https://newsapi.org/"
@@ -68,13 +71,25 @@ object NewsServer {
 }
 
 // 내부 서버
-object InternalServer {
-    private const val BASE_URL = "http://wonrdc.duckdns.org/" // PHP 서버 주소
+object RetrofitInstance {
+
+    private const val BASE_URL = "http://wonrdc.duckdns.org/"
+
+    private val client by lazy {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+    }
 
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create())) // ← 중요!
             .build()
     }
 

@@ -27,8 +27,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.glowstudio.android.blindsjn.network.LoginRequest
-import com.glowstudio.android.blindsjn.network.InternalServer
+import androidx.navigation.NavController
+import com.glowstudio.android.blindsjn.model.LoginRequest
+import com.glowstudio.android.blindsjn.network.RetrofitInstance
 import com.glowstudio.android.blindsjn.network.AuthRepository
 import com.glowstudio.android.blindsjn.R
 import com.glowstudio.android.blindsjn.network.AutoLoginManager
@@ -39,13 +40,12 @@ import java.io.IOException
 // 로그인 함수 (서버 통신)
 suspend fun login(phoneNumber: String, password: String): Boolean {
     val request = LoginRequest(phoneNumber, password)
-    val response = InternalServer.api.login(request)
+    val response = RetrofitInstance.api.login(request)
 
     return if (response.isSuccessful) {
         val result = response.body()
         Log.d("LoginScreen", "Login result: $result")
         result?.status == "success"
-
     } else {
         Log.e("LoginScreen", "Error: ${response.errorBody()?.string()}")
         false
@@ -54,39 +54,38 @@ suspend fun login(phoneNumber: String, password: String): Boolean {
 
 @Composable
 fun LoginScreen(
-    onLoginClick: (Boolean) -> Unit,
+    navController: NavController,
     onSignupClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
-    isTestMode: Boolean = true // 테스트 시, true 설정하면 로그인 버튼 누를 시, 메인으로 넘어감
+    isTestMode: Boolean = false
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    // 상태 변수
     var phoneNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var autoLoginEnabled by remember { mutableStateOf(false) }
     var showEmptyFieldsPopup by remember { mutableStateOf(false) }
     var showInvalidCredentialsPopup by remember { mutableStateOf(false) }
-    var showNetworkErrorPopup by remember { mutableStateOf(false) } // 네트워크 오류 팝업 상태
+    var showNetworkErrorPopup by remember { mutableStateOf(false) }
 
-    // 네트워크 상태 확인
-    var autoLoginAttempted by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
-        if (!autoLoginAttempted) {
-            autoLoginAttempted = true
-            if (!isNetworkAvailable(context)) {
-                showNetworkErrorPopup = true
-            } else {
-                autoLoginEnabled = AutoLoginManager.isAutoLoginEnabled(context)
-                if (autoLoginEnabled) {
-                    AutoLoginManager.getSavedCredentials(context)?.let { (savedPhone, savedPassword) ->
-                        phoneNumber = savedPhone
-                        password = savedPassword
-                        coroutineScope.launch {
-                            val success = login(savedPhone, savedPassword)
-                            if (success) onLoginClick(true)
+        if (!isNetworkAvailable(context)) {
+            showNetworkErrorPopup = true
+        } else {
+            autoLoginEnabled = AutoLoginManager.isAutoLoginEnabled(context)
+            if (autoLoginEnabled) {
+                AutoLoginManager.getSavedCredentials(context)?.let { (savedPhone, savedPassword) ->
+                    phoneNumber = savedPhone
+                    password = savedPassword
+                    coroutineScope.launch {
+                        val success = AuthRepository.login(context, savedPhone, savedPassword)
+                        if (success) {
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     }
                 }
@@ -98,23 +97,19 @@ fun LoginScreen(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 네트워크 오류 팝업
         if (showNetworkErrorPopup) {
             AlertDialog(
-                onDismissRequest = { /* 사용자가 팝업을 닫아도 무시 */ },
+                onDismissRequest = { },
                 title = { Text("네트워크 오류") },
-                text = { Text("인터넷 연결이 필요합니다. 연결 상태를 확인해주세요.") },
+                text = { Text("인터넷 연결이 필요합니다.") },
                 confirmButton = {
-                    TextButton(onClick = {
-                        showNetworkErrorPopup = false
-                    }) {
+                    TextButton(onClick = { showNetworkErrorPopup = false }) {
                         Text("확인")
                     }
                 }
             )
         }
 
-        // 상단 이미지
         Image(
             painter = painterResource(id = R.drawable.login_image),
             contentDescription = "Login Image",
@@ -126,17 +121,15 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 입력 필드 및 버튼
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 전화번호 입력
             OutlinedTextField(
                 value = phoneNumber,
-                onValueChange = { input -> phoneNumber = input.filter { char -> char.isDigit() } }, // 명시적 매개변수 사용
+                onValueChange = { phoneNumber = it.filter { char -> char.isDigit() } },
                 label = { Text("전화번호") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -145,10 +138,9 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 비밀번호 입력
             OutlinedTextField(
                 value = password,
-                onValueChange = { input -> password = input },
+                onValueChange = { password = it },
                 label = { Text("비밀번호") },
                 singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -163,19 +155,16 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // 자동 로그인 체크박스
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = autoLoginEnabled,
                     onCheckedChange = { autoLoginEnabled = it }
                 )
                 Text("자동 로그인")
             }
+
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 로그인 버튼
             Button(
                 onClick = {
                     coroutineScope.launch {
@@ -190,7 +179,10 @@ fun LoginScreen(
                                     password,
                                     autoLoginEnabled
                                 )
-                                onLoginClick(true)
+                                navController.navigate("main") {
+                                    popUpTo("login") { inclusive = true }
+                                    launchSingleTop = true
+                                }
                             } else {
                                 showInvalidCredentialsPopup = true
                             }
@@ -204,7 +196,6 @@ fun LoginScreen(
                 Text("로그인")
             }
 
-            // 입력 오류 팝업
             if (showEmptyFieldsPopup) {
                 AlertDialog(
                     onDismissRequest = { showEmptyFieldsPopup = false },
@@ -218,7 +209,6 @@ fun LoginScreen(
                 )
             }
 
-            // 로그인 실패 팝업
             if (showInvalidCredentialsPopup) {
                 AlertDialog(
                     onDismissRequest = { showInvalidCredentialsPopup = false },
@@ -234,14 +224,12 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 회원가입 버튼
             TextButton(onClick = onSignupClick) {
                 Text("계정이 없으신가요? 회원가입")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 비밀번호 찾기 버튼
             TextButton(onClick = onForgotPasswordClick) {
                 Text("비밀번호를 잊으셨나요?")
             }
