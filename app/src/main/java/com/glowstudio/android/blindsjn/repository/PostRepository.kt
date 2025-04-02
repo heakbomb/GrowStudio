@@ -8,30 +8,30 @@ import retrofit2.Response
 object PostRepository {
 
     suspend fun savePost(request: PostRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.savePost(request)
+        return InternalServer.api.savePost(request)
     }
 
     suspend fun loadPosts(): Response<PostListResponse> {
-        return RetrofitInstance.api.getAllPosts()
+        return InternalServer.api.getAllPosts()
     }
 
     suspend fun editPost(request: EditPostRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.editPost(request)
+        return InternalServer.api.editPost(request)
     }
 
     suspend fun deletePost(request: DeleteRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.deletePost(request)
+        return InternalServer.api.deletePost(request)
     }
 
     suspend fun saveComment(request: CommentRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.saveComment(request)
+        return InternalServer.api.saveComment(request)
     }
 
     suspend fun editComment(request: EditCommentRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.editComment(request)
+        return InternalServer.api.editComment(request)
     }
 
     suspend fun deleteComment(request: DeleteCommentRequest): Response<BasicResponse> {
-        return RetrofitInstance.api.deleteComment(request)
+        return InternalServer.api.deleteComment(request)
     }
 }

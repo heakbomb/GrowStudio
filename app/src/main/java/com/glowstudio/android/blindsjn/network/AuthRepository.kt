@@ -27,7 +27,7 @@ object AuthRepository {
         return try {
             val request = LoginRequest(phoneNumber, password)
             val response = withContext(Dispatchers.IO) {
-                RetrofitInstance.api.login( request)
+                InternalServer.api.login( request)
             }
 
             // ✅ 디버깅 로그 추가 (서버 응답 분석용)

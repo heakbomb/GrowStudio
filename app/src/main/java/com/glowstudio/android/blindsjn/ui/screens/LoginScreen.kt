@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.glowstudio.android.blindsjn.model.LoginRequest
-import com.glowstudio.android.blindsjn.network.RetrofitInstance
+import com.glowstudio.android.blindsjn.network.InternalServer
 import com.glowstudio.android.blindsjn.network.AuthRepository
 import com.glowstudio.android.blindsjn.R
 import com.glowstudio.android.blindsjn.network.AutoLoginManager
@@ -40,7 +40,7 @@ import java.io.IOException
 // 로그인 함수 (서버 통신)
 suspend fun login(phoneNumber: String, password: String): Boolean {
     val request = LoginRequest(phoneNumber, password)
-    val response = RetrofitInstance.api.login(request)
+    val response = InternalServer.api.login(request)
 
     return if (response.isSuccessful) {
         val result = response.body()

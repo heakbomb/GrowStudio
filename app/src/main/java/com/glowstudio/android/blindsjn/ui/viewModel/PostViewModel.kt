@@ -31,7 +31,7 @@ class PostViewModel : ViewModel() {
     fun loadPosts() {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getAllPosts()
+                val response = InternalServer.api.getAllPosts()
                 if (response.isSuccessful) {
                     _posts.value = response.body()?.data ?: emptyList()
                 } else {
@@ -47,7 +47,7 @@ class PostViewModel : ViewModel() {
     fun loadPopularPosts() {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getPopularPosts()
+                val response = InternalServer.api.getPopularPosts()
                 if (response.isSuccessful) {
                     _popularPosts.value = response.body()?.data ?: emptyList()
                 } else {
@@ -63,7 +63,7 @@ class PostViewModel : ViewModel() {
     fun savePost(title: String, content: String, userId: Int, industry: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.savePost(PostRequest(title, content, userId, industry))
+                val response = InternalServer.api.savePost(PostRequest(title, content, userId, industry))
                 if (response.isSuccessful) {
                     _statusMessage.value = response.body()?.message
                     loadPosts()
@@ -81,7 +81,7 @@ class PostViewModel : ViewModel() {
     fun deletePost(postId: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.deletePost(DeleteRequest(postId))
+                val response = InternalServer.api.deletePost(DeleteRequest(postId))
                 _statusMessage.value = if (response.isSuccessful) {
                     loadPosts()
                     response.body()?.message
@@ -98,7 +98,7 @@ class PostViewModel : ViewModel() {
     fun editPost(id: Int, title: String, content: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.editPost(EditPostRequest(id, title, content))
+                val response = InternalServer.api.editPost(EditPostRequest(id, title, content))
                 _statusMessage.value = if (response.isSuccessful) {
                     loadPosts()
                     response.body()?.message
@@ -115,7 +115,7 @@ class PostViewModel : ViewModel() {
     fun loadComments(postId: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getComments(postId)
+                val response = InternalServer.api.getComments(postId)
                 if (response.isSuccessful) {
                     _comments.value = response.body()?.data ?: emptyList()
                 } else {
@@ -135,7 +135,7 @@ class PostViewModel : ViewModel() {
     fun saveComment(postId: Int, userId: Int, content: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.saveComment(CommentRequest(postId, userId, content))
+                val response = InternalServer.api.saveComment(CommentRequest(postId, userId, content))
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
@@ -148,7 +148,7 @@ class PostViewModel : ViewModel() {
     fun deleteComment(commentId: Int, postId: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.deleteComment(DeleteCommentRequest(commentId))
+                val response = InternalServer.api.deleteComment(DeleteCommentRequest(commentId))
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
@@ -161,7 +161,7 @@ class PostViewModel : ViewModel() {
     fun editComment(commentId: Int, content: String, postId: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.editComment(EditCommentRequest(commentId, content))
+                val response = InternalServer.api.editComment(EditCommentRequest(commentId, content))
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
