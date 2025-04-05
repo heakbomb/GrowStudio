@@ -93,4 +93,8 @@ dependencies {
 
     // Core Library Desugaring: Java 8+ API를 낮은 API 레벨에서도 사용
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+
+    implementation ("com.google.accompanist:accompanist-pager:0.32.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.32.0")
 }

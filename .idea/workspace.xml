@@ -9,18 +9,16 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="825fe6b4-d9fb-46a3-80f8-bedc4e376b40" name="Changes" comment="온보딩 스크린 제작">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/EditContactScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/EditProfileScreen.kt" afterDir="false" />
+    <list default="true" id="825fe6b4-d9fb-46a3-80f8-bedc4e376b40" name="Changes" comment="회원가입 화면 레이아웃 변경">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/navigation/Navigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/navigation/Navigation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/ProfileScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/ProfileScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/screens/LoginScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/glowstudio/android/blindsjn/ui/theme/Theme.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +114,6 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "android.gradle.sync.needed": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "Shim",
@@ -231,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743864764583</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="프로필화면 조금 고침">
+      <option name="closed" value="true" />
+      <created>1743866640699</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743866640699</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -262,6 +267,24 @@
     <MESSAGE value="Merge from Won" />
     <MESSAGE value="사업자 인증 UI 제작 완." />
     <MESSAGE value="온보딩 스크린 제작" />
-    <option name="LAST_COMMIT_MESSAGE" value="온보딩 스크린 제작" />
+    <MESSAGE value="프로필화면 조금 고침" />
+    <MESSAGE value="회원가입 화면 레이아웃 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="회원가입 화면 레이아웃 변경" />
+  </component>
+  <component name="play_dynamic_filters_status">
+    <option name="appIdToCheckInfo">
+      <map>
+        <entry key="com.glowstudio.android.blindsjn">
+          <value>
+            <CheckInfo lastCheckTimestamp="1743870318851" />
+          </value>
+        </entry>
+        <entry key="com.glowstudio.android.blindsjn.test">
+          <value>
+            <CheckInfo lastCheckTimestamp="1743870318826" />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
