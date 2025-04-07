@@ -119,6 +119,6 @@ fun CommentItem(comment: Comment) {
             .padding(vertical = 4.dp)
     ) {
         Text(text = "익명", style = MaterialTheme.typography.bodyMedium)
-        Text(text = comment.content, style = MaterialTheme.typography.bodySmall)
+        //Text(text = comment.content, style = MaterialTheme.typography.bodySmall)
     }
 }
