@@ -17,8 +17,15 @@ import com.glowstudio.android.blindsjn.ui.screens.ProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.WritePostScreen
 import com.glowstudio.android.blindsjn.ui.screens.PostDetailScreen
 import com.glowstudio.android.blindsjn.ui.screens.BusinessCertificationScreen
+import com.glowstudio.android.blindsjn.ui.screens.EditProfileScreen
+import com.glowstudio.android.blindsjn.ui.screens.EditContactScreen
+import com.glowstudio.android.blindsjn.ui.screens.NewsDetailScreen
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarState
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarViewModel
+import com.glowstudio.android.blindsjn.model.Article
+import com.google.gson.Gson
+import java.net.URLDecoder
+import androidx.compose.material.Text
 
 @Composable
 fun AppNavHost(
@@ -54,11 +61,34 @@ fun AppNavHost(
             MainScreen() // MainScreen은 네비게이션의 컨테이너 역할
         }
 
+        // 뉴스 상세 화면
+        composable("newsDetail/{articleJson}") { backStackEntry ->
+            val articleJson = backStackEntry.arguments?.getString("articleJson")
+            val article = try {
+                Gson().fromJson(URLDecoder.decode(articleJson, "UTF-8"), Article::class.java)
+            } catch (e: Exception) {
+                null
+            }
+
+            topBarViewModel.updateState(TopBarState("뉴스 상세", true, false))
+
+            if (article != null) {
+                NewsDetailScreen(
+                    title = article.title ?: "제목 없음",
+                    content = article.content,
+                    description = article.description,
+                    imageUrl = article.urlToImage
+                )
+            } else {
+                Text("기사를 불러오는 데 실패했습니다.")
+            }
+        }
+
         // 홈 화면
         composable("home") {
             // 홈 화면에서는 TopBar를 단순하게 설정
             topBarViewModel.updateState(TopBarState("홈 화면", false, false))
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
 
         // 게시판 목록 화면
@@ -124,7 +154,6 @@ fun AppNavHost(
             )
         }
 
-
         // 프로필 화면
         composable("profile") {
             topBarViewModel.updateState(TopBarState("프로필", false, false))
@@ -137,6 +166,36 @@ fun AppNavHost(
                 },
                 onBusinessCertificationClick = {
                     navController.navigate("certification")
+                },
+                onProfileEditClick = {
+                    navController.navigate("editProfile")
+                },
+                onContactEditClick = {
+                    navController.navigate("editContact")
+                }
+            )
+        }
+
+        // 프로필 변경 화면
+        composable("editProfile") {
+            topBarViewModel.updateState(TopBarState("프로필 변경", true, false))
+            EditProfileScreen(
+                onBackClick = { navController.navigateUp() },
+                onSave = { 
+                    // 프로필 저장 로직
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        // 연락처 변경 화면
+        composable("editContact") {
+            topBarViewModel.updateState(TopBarState("연락처 변경", true, false))
+            EditContactScreen(
+                onBackClick = { navController.navigateUp() },
+                onSave = { 
+                    // 연락처 저장 로직
+                    navController.navigateUp()
                 }
             )
         }

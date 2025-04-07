@@ -14,34 +14,46 @@ import androidx.compose.ui.graphics.toArgb
 
 // 다크 모드 색상 팔레트
 private val DarkColorScheme = darkColorScheme(
-    primary = CoralOrange,        // 메인 색상 (코랄 오렌지)
-    secondary = SoftBeige,        // 보조 색상 (부드러운 베이지)
-    tertiary = White,             // 보조 색상 (흰색)
-    background = DarkBackground,  // 배경색 (다크 모드)
-    surface = DarkSurface,        // 카드 배경 (다크 모드)
-    onPrimary = Color.Black,      // 버튼 텍스트 (다크 모드)
-    onSecondary = Color.Black,
-    onBackground = Color.White,
-    onSurface = Color.White
+    primary = Blue,              // 메인 색상 (파란색)
+    primaryContainer = DarkBlue,
+    secondary = LightBlue,       // 보조 색상 (밝은 파란색)
+    tertiary = Blue,            // 보조 색상 (파란색)
+    background = DarkBackground, // 배경색 (다크 모드)
+    surface = DarkSurface,       // 카드 배경 (다크 모드)
+    onPrimary = White,          // 버튼 텍스트 (흰색)
+    onSecondary = White,        // 보조 버튼 텍스트 (흰색)
+    onTertiary = White,         // 보조 텍스트 (흰색)
+    onBackground = White,        // 일반 텍스트 색상 (흰색)
+    onSurface = White,          // 카드 내 텍스트 색상 (흰색)
+    onSurfaceVariant = Color(0xFFBBBBBB), // 보조 텍스트 (회색)
+    surfaceVariant = DarkSurface,// 카드 변형 색상 (다크)
+    outline = Color(0xFF3C3C3C), // 구분선 색상
+    error = Error
 )
 
 // 라이트 모드 색상 팔레트
 private val LightColorScheme = lightColorScheme(
-    primary = CoralOrange,        // 메인 색상 (코랄 오렌지)
-    secondary = SoftBeige,        // 보조 색상 (부드러운 베이지)
-    tertiary = White,             // 보조 색상 (흰색)
-    background = LightBackground, // 배경색 (라이트 모드)
-    surface = LightSurface,       // 카드 배경 (라이트 모드)
-    onPrimary = Color.White,      // 버튼 텍스트 (라이트 모드)
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black
+    primary = Blue,              // 메인 색상 (파란색)
+    primaryContainer = LightBlue,
+    secondary = DarkBlue,        // 보조 색상 (진한 파란색)
+    tertiary = Blue,            // 보조 색상 (파란색)
+    background = BackgroundWhite,// 배경색 (흰색)
+    surface = CardWhite,         // 카드 배경 (흰색)
+    onPrimary = White,          // 버튼 텍스트 (흰색)
+    onSecondary = White,        // 보조 버튼 텍스트 (흰색)
+    onTertiary = White,         // 보조 텍스트 (흰색)
+    onBackground = TextPrimary,  // 일반 텍스트 색상 (진한 회색)
+    onSurface = TextPrimary,    // 카드 내 텍스트 색상 (진한 회색)
+    onSurfaceVariant = TextSecondary, // 보조 텍스트 (회색)
+    surfaceVariant = CardWhite,  // 카드 변형 색상 (흰색)
+    outline = DividerGray,       // 구분선 색상
+    error = Error
 )
 
 @Composable
 fun BlindSJNTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
