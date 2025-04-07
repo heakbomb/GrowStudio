@@ -1,5 +1,7 @@
 package com.glowstudio.android.blindsjn.model
 
+import com.google.gson.annotations.SerializedName
+
 data class DeleteCommentRequest(
-    val comment_id: Int
+    @SerializedName("comment_id") val commentId: Int
 )

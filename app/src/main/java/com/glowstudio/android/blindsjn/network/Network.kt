@@ -28,12 +28,15 @@ interface ApiService {
 
     // 🔹 회원가입 / 로그인
     @POST("signup.php")
-    suspend fun signup(@Body request: SignupRequest): Response<ApiResponse>
+    suspend fun signup(@Body request: SignupRequest): Response<BasicResponse>
 
     @POST("login.php")
     suspend fun login(@Body request: LoginRequest): Response<ApiResponse>
 
     // 🔹 게시글
+    @GET("Get_post_by_id.php")
+    suspend fun getPostById(@Query("post_id") postId: Int): Response<PostDetailResponse>
+
     @POST("Save_post.php")
     suspend fun savePost(@Body request: PostRequest): Response<BasicResponse>
 

@@ -1,7 +1,9 @@
 package com.glowstudio.android.blindsjn.model
 
+import com.google.gson.annotations.SerializedName
+
 data class CommentRequest(
-    val post_id: Int,
-    val user_id: Int,
-    val content: String
+    @SerializedName("post_id") val postId: Int,
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("content") val content: String
 )

@@ -4,17 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.glowstudio.android.blindsjn.model.*
 import com.glowstudio.android.blindsjn.network.*
-import com.glowstudio.android.blindsjn.network.CommentRequest
-import com.glowstudio.android.blindsjn.network.EditCommentRequest
-import com.glowstudio.android.blindsjn.network.DeleteCommentRequest
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-
 class PostViewModel : ViewModel() {
-
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts
 
@@ -27,7 +21,13 @@ class PostViewModel : ViewModel() {
     private val _comments = MutableStateFlow<List<Comment>>(emptyList())
     val comments: StateFlow<List<Comment>> = _comments
 
-    // ✅ 게시글 불러오기
+    private val _selectedPost = MutableStateFlow<Post?>(null)
+    val selectedPost: StateFlow<Post?> = _selectedPost
+
+    fun setStatusMessage(message: String) {
+        _statusMessage.value = message
+    }
+
     fun loadPosts() {
         viewModelScope.launch {
             try {
@@ -43,7 +43,6 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 인기 게시글 불러오기
     fun loadPopularPosts() {
         viewModelScope.launch {
             try {
@@ -59,7 +58,6 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 게시글 저장
     fun savePost(title: String, content: String, userId: Int, industry: String) {
         viewModelScope.launch {
             try {
@@ -76,8 +74,6 @@ class PostViewModel : ViewModel() {
         }
     }
 
-
-    // ✅ 게시글 삭제
     fun deletePost(postId: Int) {
         viewModelScope.launch {
             try {
@@ -94,7 +90,6 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 게시글 수정
     fun editPost(id: Int, title: String, content: String) {
         viewModelScope.launch {
             try {
@@ -111,7 +106,24 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 댓글 불러오기
+    fun loadPostById(postId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = InternalServer.api.getPostById(postId)
+                val postData = response.body()?.data
+                if (postData != null) {
+                    _selectedPost.value = postData
+                } else {
+                    _statusMessage.value = "게시글 데이터가 없습니다."
+                }
+            } catch (e: Exception) {
+                _statusMessage.value = "게시글 조회 에러: ${e.message}"
+            }
+        }
+    }
+
+
+
     fun loadComments(postId: Int) {
         viewModelScope.launch {
             try {
@@ -126,16 +138,13 @@ class PostViewModel : ViewModel() {
             }
         }
     }
-    fun setStatusMessage(message: String) {
-        _statusMessage.value = message
-    }
 
-
-    // ✅ 댓글 저장
     fun saveComment(postId: Int, userId: Int, content: String) {
         viewModelScope.launch {
             try {
-                val response = InternalServer.api.saveComment(CommentRequest(postId, userId, content))
+                val response = InternalServer.api.saveComment(
+                    com.glowstudio.android.blindsjn.network.CommentRequest(postId, userId, content)
+                )
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
@@ -144,11 +153,12 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 댓글 삭제
     fun deleteComment(commentId: Int, postId: Int) {
         viewModelScope.launch {
             try {
-                val response = InternalServer.api.deleteComment(DeleteCommentRequest(commentId))
+                val response = InternalServer.api.deleteComment(
+                    com.glowstudio.android.blindsjn.network.DeleteCommentRequest(commentId)
+                )
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
@@ -157,11 +167,12 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    // ✅ 댓글 수정
     fun editComment(commentId: Int, content: String, postId: Int) {
         viewModelScope.launch {
             try {
-                val response = InternalServer.api.editComment(EditCommentRequest(commentId, content))
+                val response = InternalServer.api.editComment(
+                    com.glowstudio.android.blindsjn.network.EditCommentRequest(commentId, content)
+                )
                 _statusMessage.value = response.body()?.message
                 loadComments(postId)
             } catch (e: Exception) {
