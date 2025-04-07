@@ -82,6 +82,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
     // DataStore for auto-login
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
@@ -94,6 +97,8 @@ dependencies {
     // Core Library Desugaring: Java 8+ API를 낮은 API 레벨에서도 사용
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
+    // Coil (이미지 로딩)
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
     implementation ("com.google.accompanist:accompanist-pager:0.32.0")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.32.0")
