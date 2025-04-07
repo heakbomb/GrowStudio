@@ -29,7 +29,7 @@ class NewsViewModel : ViewModel() {
     private fun fetchNews() {
         viewModelScope.launch {
             try {
-                val today = LocalDate.now().minusDays(1)
+                val today = LocalDate.now().minusDays(2)
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val formattedDate = today.format(formatter)
 
@@ -42,6 +42,8 @@ class NewsViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     articles.value = response.body()?.articles ?: emptyList()
                     Log.d("NewsViewModel", "API 호출 성공: ${response.code()} / ${response.message()}")
+                    val articlesList = response.body()?.articles
+                    Log.d("NewsViewModel", "응답 받은 기사 수: ${articlesList?.size}")
                 } else {
                     errorMessage.value = "API 호출 실패: ${response.message()}"
                     Log.e("NewsViewModel", "API 호출 실패: ${response.code()} / ${response.message()}")
