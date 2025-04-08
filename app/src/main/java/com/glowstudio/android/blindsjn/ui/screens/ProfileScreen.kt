@@ -26,7 +26,8 @@ fun ProfileScreen(
     onLogoutClick: () -> Unit,
     onBusinessCertificationClick: () -> Unit,
     onProfileEditClick: () -> Unit,
-    onContactEditClick: () -> Unit
+    onContactEditClick: () -> Unit,
+    onFoodCostCalculatorClick: () -> Unit
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -59,9 +60,9 @@ fun ProfileScreen(
                         .clip(CircleShape)
                         .background(Color(0xFFE0E0E0))
                 )
-                
+
                 Spacer(modifier = Modifier.width(16.dp))
-                
+
                 Column {
                     Text(
                         text = "사용자",
@@ -92,6 +93,16 @@ fun ProfileScreen(
         }
 
         Spacer(modifier = Modifier.weight(1f))
+
+        // 푸드코스트 계산 버튼 추가
+        Button(
+            onClick = { onFoodCostCalculatorClick() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
+            Text(text = "푸드코스트 계산")
+        }
 
         // 기존 버튼들
         Button(
@@ -188,6 +199,7 @@ fun ScreenPreview_() {
         onLogoutClick = { },
         onBusinessCertificationClick = { },
         onProfileEditClick = { },
-        onContactEditClick = { }
+        onContactEditClick = { },
+        onFoodCostCalculatorClick = { }
     )
 }
