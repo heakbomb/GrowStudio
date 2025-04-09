@@ -36,6 +36,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.gson.Gson
 import java.net.URLEncoder
+import androidx.navigation.compose.rememberNavController
+import com.glowstudio.android.blindsjn.ui.theme.BlindSJNTheme
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -277,5 +279,8 @@ fun SalesSection() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-//    HomeScreen()
+    val navController = rememberNavController()
+    BlindSJNTheme {
+        HomeScreen(navController = navController)
+    }
 }
