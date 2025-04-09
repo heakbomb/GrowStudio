@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.glowstudio.android.blindsjn.model.Comment
 import com.glowstudio.android.blindsjn.ui.viewModel.PostViewModel
+import com.glowstudio.android.blindsjn.ui.components.CommonButton
 
 @Composable
 fun PostDetailScreen(navController: NavController, postId: String) {
@@ -90,18 +91,19 @@ fun PostDetailScreen(navController: NavController, postId: String) {
                             modifier = Modifier.weight(1f),
                             placeholder = { Text("댓글을 입력하세요...") }
                         )
-                        Button(onClick = {
-                            if (newComment.isNotBlank()) {
-                                viewModel.saveComment(
-                                    postId = postId.toInt(),
-                                    userId = 1, // 실제 사용자 ID로 교체 필요
-                                    content = newComment
-                                )
-                                newComment = ""
+                        CommonButton(
+                            text = "등록",
+                            onClick = {
+                                if (newComment.isNotBlank()) {
+                                    viewModel.saveComment(
+                                        postId = postId.toInt(),
+                                        userId = 1, // 실제 사용자 ID로 교체 필요
+                                        content = newComment
+                                    )
+                                    newComment = ""
+                                }
                             }
-                        }) {
-                            Text("등록")
-                        }
+                        )
                     }
                 } ?: run {
                     Text("게시글을 불러오는 중입니다...", modifier = Modifier.padding(16.dp))

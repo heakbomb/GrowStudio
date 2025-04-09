@@ -133,18 +133,9 @@ fun AppNavHost(
                         launchSingleTop = true
                     }
                 },
-                onBusinessCertificationClick = {
-                    navController.navigate("certification")
-                },
-                onProfileEditClick = {
-                    navController.navigate("editProfile")
-                },
-                onContactEditClick = {
-                    navController.navigate("editContact")
-                },
-                onFoodCostCalculatorClick = {
-                    navController.navigate("foodCost")
-                }
+                onBusinessCertificationClick = { navController.navigate("certification") },
+                onProfileEditClick = { navController.navigate("editProfile") },
+                onContactEditClick = { navController.navigate("editContact") }
             )
         }
 

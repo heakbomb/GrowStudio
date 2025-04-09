@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.glowstudio.android.blindsjn.ui.components.CommonButton
 
 @Composable
 fun FoodCostScreen(
@@ -18,21 +19,19 @@ fun FoodCostScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Button(
+        CommonButton(
+            text = "레시피 등록",
             onClick = onRegisterRecipeClick,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("레시피 등록")
-        }
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(
+        CommonButton(
+            text = "재료 등록",
             onClick = onRegisterIngredientClick,
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("재료 등록")
-        }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -49,14 +48,13 @@ fun FoodCostScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(
+        CommonButton(
+            text = "계산",
             onClick = {
                 // TODO: 실제 푸드코스트 계산 로직 연결
             },
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("계산")
-        }
+        )
     }
 }
 
