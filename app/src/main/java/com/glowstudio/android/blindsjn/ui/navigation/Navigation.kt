@@ -19,8 +19,13 @@ import com.glowstudio.android.blindsjn.ui.screens.PostDetailScreen
 import com.glowstudio.android.blindsjn.ui.screens.BusinessCertificationScreen
 import com.glowstudio.android.blindsjn.ui.screens.EditProfileScreen
 import com.glowstudio.android.blindsjn.ui.screens.EditContactScreen
+import com.glowstudio.android.blindsjn.ui.screens.NewsDetailScreen
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarState
 import com.glowstudio.android.blindsjn.ui.viewModel.TopBarViewModel
+import com.glowstudio.android.blindsjn.model.Article
+import com.google.gson.Gson
+import java.net.URLDecoder
+import androidx.compose.material.Text
 
 @Composable
 fun AppNavHost(
@@ -34,9 +39,11 @@ fun AppNavHost(
         // 로그인 화면
         composable("login") {
             LoginScreen(
-                onLoginClick = { navController.navigate("main") },
+                onLoginClick = { success ->
+                    if (success) navController.navigate("main")
+                },
                 onSignupClick = { navController.navigate("signup") },
-                onForgotPasswordClick = { /* TODO: 비밀번호 찾기 화면 이동 */ }
+                onForgotPasswordClick = { navController.navigate("forgot") }
             )
         }
 
@@ -56,11 +63,34 @@ fun AppNavHost(
             MainScreen() // MainScreen은 네비게이션의 컨테이너 역할
         }
 
+        // 뉴스 상세 화면
+        composable("newsDetail/{articleJson}") { backStackEntry ->
+            val articleJson = backStackEntry.arguments?.getString("articleJson")
+            val article = try {
+                Gson().fromJson(URLDecoder.decode(articleJson, "UTF-8"), Article::class.java)
+            } catch (e: Exception) {
+                null
+            }
+
+            topBarViewModel.updateState(TopBarState("뉴스 상세", true, false))
+
+            if (article != null) {
+                NewsDetailScreen(
+                    title = article.title ?: "제목 없음",
+                    content = article.content,
+                    description = article.description,
+                    imageUrl = article.urlToImage
+                )
+            } else {
+                Text("기사를 불러오는 데 실패했습니다.")
+            }
+        }
+
         // 홈 화면
         composable("home") {
             // 홈 화면에서는 TopBar를 단순하게 설정
             topBarViewModel.updateState(TopBarState("홈 화면", false, false))
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
 
         // 게시판 목록 화면

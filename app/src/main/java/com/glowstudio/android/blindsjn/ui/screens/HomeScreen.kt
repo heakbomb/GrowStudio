@@ -2,8 +2,10 @@ package com.glowstudio.android.blindsjn.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -21,15 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.glowstudio.android.blindsjn.R
+import com.glowstudio.android.blindsjn.network.NewsArticle
+import com.glowstudio.android.blindsjn.ui.NewsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import com.google.gson.Gson
+import java.net.URLEncoder
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -45,7 +54,7 @@ fun HomeScreen() {
         ShortcutSection()
 
         // 새로운 소식 섹션
-        NewsSection()
+        NewsSection(navController)
 
         // 오늘의 매출 관리 섹션
         SalesSection()
@@ -56,7 +65,7 @@ fun HomeScreen() {
 @Composable
 fun BannerSection() {
     val pagerState = rememberPagerState()
-    
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,7 +83,7 @@ fun BannerSection() {
                 contentScale = ContentScale.Crop
             )
         }
-        
+
         // 페이지 인디케이터
         HorizontalPagerIndicator(
             pagerState = pagerState,
@@ -98,9 +107,9 @@ fun ShortcutSection() {
             Text("바로가기", fontWeight = FontWeight.Bold)
             Icon(Icons.Default.KeyboardArrowRight, contentDescription = "더보기")
         }
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -124,7 +133,12 @@ fun ShortcutSection() {
 }
 
 @Composable
-fun NewsSection() {
+fun NewsSection(navController: NavHostController) {
+    val viewModel: NewsViewModel = viewModel()
+    val articles: List<NewsArticle> by viewModel.articles  // ✅ 타입 명시
+    val isLoading by viewModel.isLoading
+    val errorMessage by viewModel.errorMessage
+
     Column(modifier = Modifier.padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -134,84 +148,65 @@ fun NewsSection() {
             Text("새로운 소식", fontWeight = FontWeight.Bold)
             Icon(Icons.Default.KeyboardArrowRight, contentDescription = "더보기")
         }
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // 첫 번째 카드
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(200.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF5F5F5)
-                )
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.login_image),
-                        contentDescription = "뉴스 이미지",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "조선일보 / 김조선 기자",
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        "최저 임금, 얼마나 오를까?",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+
+        when {
+            isLoading -> {
+                CircularProgressIndicator()
             }
-            
-            // 두 번째 카드
-            Card(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(200.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF5F5F5)
-                )
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.login_image),
-                        contentDescription = "뉴스 이미지",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "중앙일보 / 이중앙 기자",
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        "정부 지원 정책 확대",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+            errorMessage.isNotEmpty() -> {
+                Text(errorMessage, color = Color.Red)
+            }
+            else -> {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    items(articles.toList()) { article ->
+                        Card(
+                            modifier = Modifier
+                                .width(300.dp)
+                                .padding(8.dp)
+                                .clickable {
+                                    val articleJson = URLEncoder.encode(Gson().toJson(article), "UTF-8")
+                                    navController.navigate("newsDetail/$articleJson")
+                                },
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                        ) {
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)) {
+
+                                AsyncImage(
+                                    model = article.urlToImage,
+                                    contentDescription = "기사 이미지",
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .weight(1f)
+                                        .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(12.dp),
+                                    verticalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = article.title ?: "제목 없음",
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = article.description ?: "설명 없음",
+                                        maxLines = 3,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -245,5 +240,5 @@ fun SalesSection() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+//    HomeScreen()
 }
